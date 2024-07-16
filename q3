@@ -1,0 +1,34 @@
+import googlemaps
+from datetime import datetime
+
+# Replace with your actual Google Maps API key
+api_key = AIzaSyD_jA7ABwQSizxPzXyQe0ibuhPBmRQX_nA 
+
+gmaps = googlemaps.Client(key=api_key)
+
+def get_traffic_and_routes(origin, destination):
+    now = datetime.now()
+    directions_result = gmaps.directions(
+        origin,
+        destination,
+        mode="driving",
+        departure_time=now,
+        traffic_model="best_guess"  # Use real-time traffic data
+    )
+
+    if directions_result:
+        route = directions_result[0]
+        summary = route['legs'][0]['summary']
+        duration_in_traffic = route['legs'][0]['duration_in_traffic']['text']
+        print(f"Route Summary: {summary}")
+        print(f"Estimated Travel Time (with traffic): {duration_in_traffic}")
+
+        # You can further process the 'directions_result' to extract 
+        # more detailed traffic information and alternative routes.
+    else:
+        print("No directions found.")
+
+# Example usage:
+origin = "Times Square, New York"
+destination = "Central Park, New York"
+get_traffic_and_routes(origin, destination)
